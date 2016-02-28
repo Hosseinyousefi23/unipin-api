@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>Following</title>
+        <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
+        <script src="{% static 'javascript/semantic.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
+        <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
+        <link type="text/css" rel="stylesheet" href="{% static 'styles/following_page.css' %}"/>
+    </head>
+    <body>
+        <h1>you are as {{ user.get_full_name }}</h1>
+       <a href="{% url 'xnote_base:main_page' %}">
+            <button>Home</button>
+        </a>
+        <a href="{% url 'xnote_base:profile' %}">
+            <button>Profile</button>
+        </a>
+        <a href="{% url 'xnote_base:followers_page' %}">
+            <button>Followers</button>
+        </a>
+        <a href="{% url 'xnote_base:following_page' %}">
+            <button>Following</button>
+        </a>
+        <a href="{% url 'xnote_base:logout' %}">
+            <button>Logout</button>
+        </a>
+        <br style="clear: both"/>
+        {% for followed in followed_list %}
+            <div class="ui cards" id="suggestion{{ forloop.counter }}">
+                <div class="card">
+                    <div class="content">
+                        <img class="left floated mini ui image"
+                             src="{{ followed.profile_image.url }}">
+
+                        <div class="header">
+                            {{ followed.real_name }}
+                        </div>
+
+                        <div class="description">
+                            {{ followed.description }}
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        {% endfor %}
+    </body>
+</html>

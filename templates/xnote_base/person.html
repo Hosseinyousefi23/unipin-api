@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head lang="en">
+        <meta charset="UTF-8">
+        <title>{{ person.user.get_full_name }}</title>
+        <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
+        <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
+        <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
+        <link rel="stylesheet" href="{% static 'styles/person.css' %}">
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1 class="full_name">{{ person.user.get_full_name }}</h1>
+                <img class="profile_image" src="{{ person.profile_image.url }}"/>
+
+
+                <div class="buttons">
+                    <button type="button" class="btn btn-success"><h2><b>
+                        دنبال نمودن
+                    </b></h2></button>
+                    <button type="button" class="btn btn-success">
+                        <h2><b>
+                            رفاقت
+                        </b></h2>
+                    </button>
+                </div>
+            </div>
+            <br style="clear: both"/>
+
+            <div class="content">
+                <div class="panel-group">
+                    {% for post in post_list %}
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                <h3 style="display: inline">{{ post.title }}</h3>
+                            </div>
+                            <div class="panel-body">
+                                {{ post.context }}
+                            </div>
+                            <div class="panel-footer">
+                                <div class="panel-date">{{ post.publish_time }}</div>
+                                <br style="clear: both"/>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
