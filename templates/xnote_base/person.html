@@ -3,7 +3,7 @@
 <html>
     <head lang="en">
         <meta charset="UTF-8">
-        <title>{{ person.user.get_full_name }}</title>
+        <title>{{ super_conductor.real_name }}</title>
         <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
         <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
         <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
@@ -12,8 +12,8 @@
     <body>
         <div class="container">
             <div class="header">
-                <h1 class="full_name">{{ person.user.get_full_name }}</h1>
-                <img class="profile_image" src="{{ person.profile_image.url }}"/>
+                <h1 class="full_name">{{ super_conductor.url_name }}</h1>
+                <img class="profile_image" src="{{ super_conductor.profile_image.url }}"/>
 
 
                 <div class="buttons">

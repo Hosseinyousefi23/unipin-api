@@ -13,7 +13,7 @@
     </head>
     <body>
         <h1>you are as {{ user.get_full_name }}</h1>
-       <a href="{% url 'xnote_base:main_page' %}">
+        <a href="{% url 'xnote_base:main_page' %}">
             <button>Home</button>
         </a>
         <a href="{% url 'xnote_base:profile' %}">
@@ -37,17 +37,15 @@
                              src="{{ followed.profile_image.url }}">
 
                         <div class="header">
-                            {{ followed.real_name }}
+                            <a href="{% url 'xnote_base:view_page' name=followed.url_name %}">
+                                {{ followed.real_name }}
+                            </a>
                         </div>
-
                         <div class="description">
                             {{ followed.description }}
-
-
                         </div>
                     </div>
                 </div>
-
             </div>
         {% endfor %}
     </body>

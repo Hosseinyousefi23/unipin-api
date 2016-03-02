@@ -79,7 +79,7 @@ class SuperInstitution(SuperConductor):
 class Membership(models.Model):
     institution = models.ForeignKey(SuperInstitution, related_name='membership_obj')
     person = models.ForeignKey(Person, related_name='membership_obj')
-    # portfolio = models.ForeignKey(Portfolio, related_name='membership_obj')
+    portfolio = models.ForeignKey(Portfolio, related_name='membership_obj')
     start_date = models.DateTimeField(default=timezone.now)
     end_date = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
@@ -176,7 +176,7 @@ class Post(models.Model):
 
 class Group(SuperInstitution):
     is_department_group = models.BooleanField(default=False)
-    related_university = models.ForeignKey(University, null=True, related_name="%(app_label)s_%(class)s_related")
+    related_university = models.ForeignKey(University, null=True, related_name="related_groups")
 
     def __str__(self):
         return self.superInstitution.name

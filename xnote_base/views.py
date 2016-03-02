@@ -71,11 +71,12 @@ def signup(request):
         return render(request, 'xnote_base/signup.html')
 
 
+@login_required
 def view_page(request, name):
-    person = get_object_or_404(Person, url_name=name)
-    post_list = Post.objects.filter(author=person).order_by('-publish_time')
+    super_conductor = get_object_or_404(SuperConductor, url_name=name)
+    post_list = Post.objects.filter(author=super_conductor).order_by('-publish_time')
     return render(request, 'xnote_base/person.html', {
-        'person': person,
+        'super_conductor': super_conductor,
         'post_list': post_list,
 
     })
