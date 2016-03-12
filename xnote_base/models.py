@@ -50,6 +50,8 @@ class Person(SuperConductor):
     def __str__(self):
         return self.user.username
 
+    def natural_key(self):
+        return self.national_id
 
 # ------------------------------------------------------------------------
 

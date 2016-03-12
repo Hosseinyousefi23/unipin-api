@@ -1,8 +1,9 @@
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core import serializers
 from django.core.urlresolvers import reverse
-from django.http.response import Http404, HttpResponse, HttpResponseRedirect
+from django.http.response import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from xnote_base.models import Person, Post, SuperConductor, Follow
@@ -16,14 +17,24 @@ def main_page(request):
         post_list = Post.objects.filter(author__in=person.follows.all()).order_by('-publish_time')
         suggestions = SuperConductor.objects.exclude(
             Q(url_name=person.url_name) | Q(followers__url_name=person.url_name))
-        return render(request, 'xnote_base/userindex.html', {
-            'user': request.user,
-            'post_list': post_list,
-            'suggestions': suggestions,
-        })
+        if 'platform' in request.GET and request.GET['platform'] == 'android':
+            return JsonResponse({
+                'user': request.user.first_name + ' ' + request.user.last_name,
+                'post_list': serializers.serialize('json', post_list),
+                'suggestions': serializers.serialize('json', suggestions),
+            })
+        else:
+            return render(request, 'xnote_base/userindex.html', {
+                'user': request.user,
+                'post_list': post_list,
+                'suggestions': suggestions,
+            })
     else:
         post_list = Post.objects.filter(author__is_formal=True, is_public=True).order_by('-publish_time')
-        return render(request, 'xnote_base/index.html', {'post_list': post_list})
+        if 'platform' in request.GET and request.GET['platform'] == 'android':
+            return JsonResponse({'post_list': serializers.serialize('json', post_list)})
+        else:
+            return render(request, 'xnote_base/index.html', {'post_list': post_list})
 
 
 @login_required
@@ -34,10 +45,16 @@ def settings(request):
 @login_required
 def my_profile(request):
     post_list = Post.objects.filter(author=request.user.person)
-    return render(request, 'xnote_base/profile.html', {
-        'user': request.user,
-        'post_list': post_list,
-    })
+    if 'platform' in request.GET and request.GET['platform'] == 'android':
+        return JsonResponse({
+            'user': request.user.first_name + ' ' + request.user.last_name,
+            'post_list': serializers.serialize('json', post_list)
+        })
+    else:
+        return render(request, 'xnote_base/profile.html', {
+            'user': request.user,
+            'post_list': post_list,
+        })
 
 
 def login_view(request):
