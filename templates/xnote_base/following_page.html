@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
     <head lang="en">
         <meta charset="UTF-8">
         <title>Following</title>
@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
         <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
         <link type="text/css" rel="stylesheet" href="{% static 'styles/following_page.css' %}"/>
+        <script src="{% static 'javascript/following_page.js'  %}"></script>
     </head>
     <body>
         <h1>you are as {{ user.get_full_name }}</h1>
@@ -30,7 +31,7 @@
         </a>
         <br style="clear: both"/>
         {% for followed in followed_list %}
-            <div class="ui cards" id="suggestion{{ forloop.counter }}">
+            <div class="ui cards" id="followed{{ forloop.counter }}">
                 <div class="card">
                     <div class="content">
                         <img class="left floated mini ui image"
@@ -44,6 +45,11 @@
                         <div class="description">
                             {{ followed.description }}
                         </div>
+                        <div onclick="unfollow('{{ followed.url_name }}', {{ forloop.counter }})"
+                                             class="btn btn-warning"
+                                             name="">
+                                            Unfollow
+                                        </div>
                     </div>
                 </div>
             </div>

@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html xmlns="http://www.w3.org/1999/html">
     <head lang="en">
         <meta charset="UTF-8">
         <title>{{ user.get_full_name }}</title>
@@ -13,7 +13,7 @@
         <script src="{% static 'javascript/new_post.js' %}"></script>
     </head>
     <body>
-        <h1>you are as {{ user.get_full_name }}</h1>
+        <h1>you are as {{ person.real_name }}</h1>
         <a href="{% url 'xnote_base:main_page' %}">
             <button>Home</button>
         </a>
@@ -31,16 +31,24 @@
         </a>
 
         <form action="{% url 'xnote_base:new_post' %}" method="post">
-            <select>
+            {% csrf_token %}
+            <select name="as">
+                <option value="{{ person.url_name }}">{{ person.real_name }}</option>
                 {% for group in permission_group_list %}
-                    <option>{{ group.real_name }}</option>
+                    <option value="{{ group.url_name }}">{{ group.real_name }}</option>
                 {% endfor %}
+            </select>
+            <select name="is_public">
+                <option value="public">Public</option>
+                <option value="private">Private</option>
             </select>
             <label for="title">Title: </label>
             <input type="text" name="title" id="title"/>
             <br/>
             <label for="content">Context: </label>
-            <textarea rows="10" cols="150" id="context"></textarea>
+            <textarea rows="10" cols="150" id="context" name="context"></textarea>
+            <br/>
+            <input type="submit" value="Post"/>
         </form>
     </body>
 </html>

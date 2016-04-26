@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from xnote_base.models import Person, Post, SuperConductor, Follow
+from xnote_base.models import Person, Post, SuperConductor, Follow, SuperInstitution
 from django.db.models import Q
 
 
@@ -64,7 +64,13 @@ def login_view(request):
     if user is not None:
         if user.is_active:
             login(request, user)
-            return HttpResponseRedirect(reverse('xnote_base:main_page'))
+            if 'platform' in request.GET and request.GET['platform'] == 'android':
+                return JsonResponse({
+                    'message': 'redirect to main page'
+                })
+
+            else:
+                return HttpResponseRedirect(reverse('xnote_base:main_page'))
         else:
             return HttpResponse('you cannot login because you are blocked.')
     else:
@@ -83,46 +89,79 @@ def signup(request):
         person.save()
         user = authenticate(username=post['username'], password=post['password'])
         login(request, user)
-        return HttpResponseRedirect(reverse('xnote_base:main_page'))
+        if 'platform' in request.GET and request.GET['platform'] == 'android':
+            return JsonResponse({
+                'message': 'redirect to main page'
+            })
+        else:
+            return HttpResponseRedirect(reverse('xnote_base:main_page'))
     else:
-        return render(request, 'xnote_base/signup.html')
+        if 'platform' in request.GET and request.GET['platform'] == 'android':
+            return JsonResponse({
+                'message': 'sign-up page'
+            })
+        else:
+            return render(request, 'xnote_base/signup.html')
 
 
 @login_required
 def view_page(request, name):
     super_conductor = get_object_or_404(SuperConductor, url_name=name)
     post_list = Post.objects.filter(author=super_conductor).order_by('-publish_time')
-    return render(request, 'xnote_base/person.html', {
-        'super_conductor': super_conductor,
-        'post_list': post_list,
+    if 'platform' in request.GET and request.GET['platform'] == 'android':
+        return JsonResponse({
+            'super_conductor': serializers.serialize('json', super_conductor),
+            'post_list': serializers.serialize('json', post_list),
+        })
+    else:
+        return render(request, 'xnote_base/person.html', {
+            'super_conductor': super_conductor,
+            'post_list': post_list,
 
-    })
+        })
 
 
 @login_required
 def followers_page(request):
     person = request.user.person
     follower_list = Person.objects.filter(following_follow_obj__followed=person)
-    return render(request, 'xnote_base/followers_page.html', {
-        'user': request.user,
-        'follower_list': follower_list,
-    })
+    if 'platform' in request.GET and request.GET['platform'] == 'android':
+        return JsonResponse({
+            'user': request.user.first_name + ' ' + request.user.last_name,
+            'follower_list': serializers.serialize('json', follower_list)
+        })
+    else:
+        return render(request, 'xnote_base/followers_page.html', {
+            'user': request.user,
+            'follower_list': follower_list,
+        })
 
 
 @login_required
 def following_page(request):
     person = request.user.person
     followed_list = SuperConductor.objects.filter(followers_follow_obj__follower=person)
-    return render(request, 'xnote_base/following_page.html', {
-        'user': request.user,
-        'followed_list': followed_list,
-    })
+    if 'platform' in request.GET and request.GET['platform'] == 'android':
+        return JsonResponse({
+            'user': request.user.first_name + ' ' + request.user.last_name,
+            'follower_list': serializers.serialize('json', followed_list)
+        })
+    else:
+        return render(request, 'xnote_base/following_page.html', {
+            'user': request.user,
+            'followed_list': followed_list,
+        })
 
 
 def log_out(request):
     if request.user.is_authenticated():
         logout(request)
-    return HttpResponseRedirect(reverse('xnote_base:main_page'))
+    if 'platform' in request.GET and request.GET['platform'] == 'android':
+        return JsonResponse({
+            'message': 'redirect to main page'
+        })
+    else:
+        return HttpResponseRedirect(reverse('xnote_base:main_page'))
 
 
 def check_username(request):
@@ -143,15 +182,46 @@ def follow(request):
     return HttpResponse('ok')
 
 
+def unfollow(request):
+    print("unfollow")
+    name = request.GET['name']
+    conductor = SuperConductor.objects.get(url_name=name)
+    person = request.user.person
+    Follow.objects.filter(follower=person, followed=conductor).delete()
+    return HttpResponse('ok')
+
+
 @login_required
 def new_post(request):
     if request.method == 'GET':
         user = request.user
-        permission_group_list = SuperConductor.objects.all()
-        return render(request, 'xnote_base/new_post.html', {
-            'user': user,
-            'permission_group_list': permission_group_list,
-        })
+
+        permission_group_list = SuperInstitution.objects.filter(
+            (Q(membership_obj__person=user.person) & (
+                Q(membership_obj__is_admin=True) | Q(membership_obj__portfolio__permissions__name='create_post'))))
+
+        '''
+
+            (Q(__class______name__='Person') & Q(url_name=user.person.url_name)) | (
+                Q(__class______name__='SuperInstitution') & Q(membership_obj__person=user.person) & (
+                    Q(membership_obj__is_admin=True) | Q(membership_obj__portfolio__permissions__name='create_post')))
+         '''
+        if 'platform' in request.GET and request.GET['platform'] == 'android':
+            return JsonResponse({
+                'user': request.user.person.real_name,
+                'permission_group_list': serializers.serialize('json', permission_group_list),
+            })
+        else:
+            return render(request, 'xnote_base/new_post.html', {
+                'person': user.person,
+                'permission_group_list': permission_group_list,
+            })
     else:
-        # return HttpResponse()
-        pass
+        author_name = request.POST['as']
+        title = request.POST['title']
+        context = request.POST['context']
+        is_public = True if request.POST['is_public'] == "public" else False
+        author = SuperConductor.objects.get(url_name=author_name)
+        author.post_set.create(title=title, context=context, publish_time=timezone.now(), author=author,
+                               is_public=is_public)
+        return HttpResponseRedirect(reverse("xnote_base:view_page", kwargs={'name': author_name}))

@@ -14,6 +14,7 @@ urlpatterns = [
     url(r'^check_username$', views.check_username, name='check_username'),
     url(r'^new_post$', views.new_post, name='new_post'),
     url(r'^follow$', views.follow, name='follow'),
+    url(r'^unfollow$', views.unfollow, name='unfollow'),
     url(r'^(?P<name>\w+)$', views.view_page, name='view_page'),
 
 ]

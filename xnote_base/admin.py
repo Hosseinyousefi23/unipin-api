@@ -1,6 +1,6 @@
 from django.contrib import admin
 from xnote_base.models import Person, Department, Group, Studentity, SuperInstitution, Tag, \
-    University, Post, Event, Follow, Place, SuperConductor,Membership,Permission,Portfolio
+    University, Post, Event, Follow, Place, SuperConductor, Membership, Permission, Portfolio
 
 admin.site.register(Person)
 admin.site.register(Department)
