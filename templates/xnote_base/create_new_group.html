@@ -8,13 +8,14 @@
     <script src="{% static 'javascript/create_new_group.js' %}"></script>
 {% endblock %}
 {% block body %}
-    <form action="">
+    <form action="{% url 'xnote_base:new_group_action' %}">
+        {% csrf_token %}
         <div id="top_div">
             <div id="image_div">
                 <img class="ui small circular image" id="profile_img" src="{% static 'image/group-circled.svg' %}">
                 {#this button is for uploading the group profile image#}
                 <input type="file" id="upload_image" onchange="readURL(this)" class="circular ui icon button">
-                    <i class="icon camera"></i>
+                <i class="icon camera"></i>
                 </input>
             </div>
             <div id="group_name_div" class="ui left icon input">

@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^follow$', views.follow, name='follow'),
     url(r'^unfollow$', views.unfollow, name='unfollow'),
     url(r'^new_group$', views.new_group , name='new_group'),
+    url(r'^new_group_action$', views.new_group_action, name='new_group_action'),
     url(r'^(?P<name>\w+)$', views.view_page, name='view_page'),
 
 ]

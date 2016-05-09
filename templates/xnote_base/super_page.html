@@ -1,35 +1,38 @@
 {% load static %}
-<!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    {% block title %}
-    {% endblock %}
-    <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
-    <script src="{% static 'javascript/semantic.min.js' %}"></script>
-    {% block add_css_and_js %}
-    {% endblock %}
-</head>
-<body dir="rtl">
-<h1>you are as {{ user.get_full_name }}</h1>
-<a href="{% url 'xnote_base:main_page' %}">
-    <button>Home</button>
-</a>
-<a href="{% url 'xnote_base:profile' %}">
-    <button>Profile</button>
-</a>
-<a href="{% url 'xnote_base:followers_page' %}">
-    <button>Followers</button>
-</a>
-<a href="{% url 'xnote_base:following_page' %}">
-    <button>Following</button>
-</a>
-<a href="{% url 'xnote_base:logout' %}">
-    <button>Logout</button>
-</a>
-<br style="clear: both"/>
-{% block body %}
-{% endblock %}
-</body>
+    <head lang="en">
+        <meta charset="UTF-8">
+        {% block title %}
+        {% endblock %}
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
+        <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
+        <script src="{% static 'javascript/semantic.min.js' %}"></script>
+        <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
+
+        {% block css_and_js %}
+        {% endblock %}
+    </head>
+
+    <body>
+        <a href="{% url 'xnote_base:main_page' %}">
+            <button>Home</button>
+        </a>
+        <a href="{% url 'xnote_base:signup' %}">
+            <button>Sign_up</button>
+        </a>
+
+        <form action="{% url 'xnote_base:login' %}" method="post">
+            {% csrf_token %}
+            <input type="text" placeholder="username" name="username"/>
+            <input type="password" placeholder="password" name="password"/>
+            <input type="submit" value="login"/>
+        </form>
+
+        {% block body %}
+        {% endblock %}
+    </body>
 </html>
