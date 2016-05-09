@@ -15,7 +15,7 @@ urlpatterns = [
     url(r'^new_post$', views.new_post, name='new_post'),
     url(r'^follow$', views.follow, name='follow'),
     url(r'^unfollow$', views.unfollow, name='unfollow'),
-    url(r'^new_group$', views.new_group_page, name='new_group'),
+    url(r'^new_group$', views.new_group , name='new_group'),
     url(r'^(?P<name>\w+)$', views.view_page, name='view_page'),
 
 ]

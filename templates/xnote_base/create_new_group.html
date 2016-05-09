@@ -1,69 +1,65 @@
-{% load static %}
-<!DOCTYPE html>
-<html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>create new group</title>
-        <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
-        <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
-        <script src="{% static 'javascript/semantic.min.js' %}"></script>
-        <link rel="stylesheet" type="text/css" href="{% static 'styles/style_2.css' %}">
-    </head>
-    <body id="create_new_group_body" dir="rtl">
+{% extends 'xnote_base/super_page.html' %}
+{% block title %}
+    <title>create new group</title>
+{% endblock %}
+{% block add_css_and_js %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/create_new_group.css' %}">
+    <script src="{% static 'javascript/create_new_group.js' %}"></script>
+{% endblock %}
+{% block body %}
+    <form action="">
+        <div id="top_div">
+            <div id="image_div">
+                <img class="ui small circular image" id="profile_img" src="{% static 'image/group-circled.svg' %}">
+                {#this button is for uploading the group profile image#}
+                <input type="file" id="upload_image" onchange="readURL(this)" class="circular ui icon button">
+                    <i class="icon camera"></i>
+                </input>
+            </div>
+            <div id="group_name_div" class="ui left icon input">
+                {#            this field is for putting the name of the groups#}
+                <input id="group_name_input" type="text" placeholder="نام گروه">
+                <i class="users icon"></i>
+            </div>
+        </div>
+        <div class="ui divider"></div>
 
-        <form>
-            <div id="top_div">
-                <div id="image_div">
-                    <img class="ui small circular image" src="{% static 'image/group-circled.svg' %}">
-                    {#this button is for uploading the group profile image#}
-                    <button id="upload_image" class="circular ui icon button">
-                        <i class="icon camera"></i>
-                    </button>
-                </div>
-                <div id="group_name_div" class="ui left icon input">
-                    {#            this field is for putting the name of the groups#}
-                    <input id="group_name_input" type="text" placeholder="نام گروه">
-                    <i class="users icon"></i>
-                </div>
-            </div>
-            <div class="ui divider"></div>
+        <div class="field" id="description_div">
+            {#        this textarea is for adding some descriptions about the groups #}
+        <textarea id="group_description_text_area" rows="4" cols="80"
+                  placeholder="توضیحی در مورد گروه ( این متن به کاربر ها جهت معرفی گروه شما نشان داده خواهد شد ) ."></textarea>
+        </div>
+        <div class="ui divider"></div>
+        <div id="tags_div">
+            {#            choosing tags section : should use 'ajax' and change <a> tags to button later #}
+            <p>از میان تگ های زیر انتخاب کنید ( حداکثر ۳ تگ مجاز است )</p>
+            <input type="checkbox" name="tag" class="ui red circular label">علمی</a>
+            <input type="checkbox" name="tag" class="ui orange circular label">فرهنگی</a>
+            <input type="checkbox" name="tag" class="ui yellow circular label">سیاسی</a>
+            <input type="checkbox" name="tag" class="ui olive circular label">ورزشی</a>
+            <input type="checkbox" name="tag" class="ui green circular label">هنری</a>
 
-            <div class="field"   id="description_div">
-                {#        this textarea is for adding some descriptions about the groups #}
-                <textarea id="group_description_text_area" rows="4" cols="80"
-                          placeholder="توضیحی در مورد گروه ( این متن به کاربر ها جهت معرفی گروه شما نشان داده خواهد شد ) ."></textarea>
-            </div>
-            <div class="ui divider"></div>
-            <div id="tags_div">
-                {#            choosing tags section : should use 'ajax' and change <a> tags to button later #}
-                <p>از میان تگ های زیر انتخاب کنید ( حداکثر ۳ تگ مجاز است )</p>
-                <a class="ui red circular label">علمی</a>
-                <a class="ui orange circular label">فرهنگی</a>
-                <a class="ui yellow circular label">سیاسی</a>
-                <a class="ui olive circular label">ورزشی</a>
-                <a class="ui green circular label">هنری</a>
+        </div>
+        <div class="ui divider"></div>
+        <div id="is_public_div">
 
-            </div>
-            <div class="ui divider"></div>
-            <div id="is_public_div">
-
-                <p>این جا یه توضیح خوب در مورد این پابلیک و غیر پابلیک بودن میدیم و بعدش اگه بود میگیم این چک باکسو
-                    داستان کنه </p>
-                {#        after above description they should check the check box if they think that their post are public #}
-                <input type="checkbox" name="is_public">
-                توضیحات بالا را خواندم ...داستان
-            </div>
-            <div class="ui divider"></div>
-            <div id="agreement_div">
-                <p>این قسمت باید یه توضیح در مورد سایت و از این داستانا بدیم اگه این شرایط رو پذیرفت که تیک میزنه مگر نه
-                    به داستان میره !</p>
-                {#                after above description that contains some privacy policy they may check the checkbox below if they agree with that #}
-                <input type="checkbox" name="privacy_policy">
-                توضیحات بالا را خواندم و همه چیو قبول دارم :)
-            </div>
-            <div id="submit_button_div">
-                <button class="ui blue button">بساز گروهو</button>
-            </div>
-        </form>
-    </body>
-</html>
+            <p>این جا یه توضیح خوب در مورد این پابلیک و غیر پابلیک بودن میدیم و بعدش اگه بود میگیم این چک باکسو داستان
+                کنه </p>
+            {#        after above description they should check the check box if they think that their post are public #}
+            <input type="checkbox" name="is_public">
+            توضیحات بالا را خواندم ...داستان
+        </div>
+        <div class="ui divider"></div>
+        <div id="agreement_div">
+            <p>این قسمت باید یه توضیح در مورد سایت و از این داستانا بدیم اگه این شرایط رو پذیرفت که تیک میزنه مگر نه به
+                داستان میره !</p>
+            {#                after above description that contains some privacy policy they may check the checkbox below if they agree with that #}
+            <input type="checkbox" name="privacy_policy">
+            توضیحات بالا را خواندم و همه چیو قبول دارم :)
+        </div>
+        <div id="submit_button_div">
+            <button class="ui blue button">بساز گروهو</button>
+        </div>
+    </form>
+{% endblock %}

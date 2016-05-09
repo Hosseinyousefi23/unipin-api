@@ -227,5 +227,5 @@ def new_post(request):
         return HttpResponseRedirect(reverse("xnote_base:view_page", kwargs={'name': author_name}))
 
 
-def new_group_page(request):
+def new_group(request):
     return render(request, 'xnote_base/create_new_group.html', {})
