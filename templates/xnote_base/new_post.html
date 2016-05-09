@@ -1,54 +1,34 @@
+{% extends 'xnote_base/user_super_page.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/html">
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>{{ user.get_full_name }}</title>
-        <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
-        <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
-        <script src="{% static 'javascript/semantic.min.js' %}"></script>
-        <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
-        <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
-        <link type="text/css" rel="stylesheet" href="{% static 'styles/new_post.css' %}"/>
-        <script src="{% static 'javascript/new_post.js' %}"></script>
-    </head>
-    <body>
-        <h1>you are as {{ person.real_name }}</h1>
-        <a href="{% url 'xnote_base:main_page' %}">
-            <button>Home</button>
-        </a>
-        <a href="{% url 'xnote_base:profile' %}">
-            <button>Profile</button>
-        </a>
-        <a href="{% url 'xnote_base:followers_page' %}">
-            <button>Followers</button>
-        </a>
-        <a href="{% url 'xnote_base:following_page' %}">
-            <button>Following</button>
-        </a>
-        <a href="{% url 'xnote_base:logout' %}">
-            <button>Logout</button>
-        </a>
 
-        <form action="{% url 'xnote_base:new_post' %}" method="post">
-            {% csrf_token %}
-            <select name="as">
-                <option value="{{ person.url_name }}">{{ person.real_name }}</option>
-                {% for group in permission_group_list %}
-                    <option value="{{ group.url_name }}">{{ group.real_name }}</option>
-                {% endfor %}
-            </select>
-            <select name="is_public">
-                <option value="public">Public</option>
-                <option value="private">Private</option>
-            </select>
-            <label for="title">Title: </label>
-            <input type="text" name="title" id="title"/>
-            <br/>
-            <label for="content">Context: </label>
-            <textarea rows="10" cols="150" id="context" name="context"></textarea>
-            <br/>
-            <input type="submit" value="Post"/>
-        </form>
-    </body>
-</html>
+{% block title %}
+    <title>{{ user.get_full_name }}</title>
+{% endblock %}
+
+{% block add_css_and_js %}
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/new_post.css' %}"/>
+    <script src="{% static 'javascript/new_post.js' %}"></script>
+{% endblock %}
+
+{% block body %}
+    <form action="{% url 'xnote_base:new_post' %}" method="post">
+        {% csrf_token %}
+        <select name="as">
+            <option value="{{ person.url_name }}">{{ person.real_name }}</option>
+            {% for group in permission_group_list %}
+                <option value="{{ group.url_name }}">{{ group.real_name }}</option>
+            {% endfor %}
+        </select>
+        <select name="is_public">
+            <option value="public">Public</option>
+            <option value="private">Private</option>
+        </select>
+        <label for="title">Title: </label>
+        <input type="text" name="title" id="title"/>
+        <br/>
+        <label for="content">Context: </label>
+        <textarea rows="10" cols="150" id="context" name="context"></textarea>
+        <br/>
+        <input type="submit" value="Post"/>
+    </form>
+{% endblock %}

@@ -1,64 +1,43 @@
+{% extends 'xnote_base/user_super_page.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-    <head lang="en">
-        <meta charset="UTF-8">
-        <title>Profile</title>
-        <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
-        <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
-        <script src="{% static 'javascript/semantic.min.js' %}"></script>
-        <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
-        <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
-        <link type="text/css" rel="stylesheet" href="{% static 'styles/profile.css' %}"/>
-    </head>
-    <body>
-        <h1>you are as {{ user.get_full_name }}</h1>
-        <a href="{% url 'xnote_base:main_page' %}">
-            <button>Home</button>
-        </a>
-        <a href="{% url 'xnote_base:profile' %}">
-            <button>Profile</button>
-        </a>
-        <a href="{% url 'xnote_base:followers_page' %}">
-            <button>Followers</button>
-        </a>
-        <a href="{% url 'xnote_base:following_page' %}">
-            <button>Following</button>
-        </a>
-        <a href="{% url 'xnote_base:logout' %}">
-            <button>Logout</button>
-        </a>
-        <br style="clear: both"/>
-        
-        <div class="post-container">
-            <div class="header">
-                <div class="image">
-                    <img id="img" src="{{ user.person.profile_image.url }}"/>
-                </div>
-                <div class="name">
-                    <h1><b>{{ user.get_full_name }}</b></h1>
-                </div>
+
+{% block title %}
+    <title>Profile</title>
+{% endblock %}
+
+{% block add_css_and_js %}
+    <link type="text/css" rel="stylesheet" href="{% static 'styles/profile.css' %}"/>
+{% endblock %}
+
+{% block body %}
+    <div class="post-container">
+        <div class="header">
+            <div class="image">
+                <img id="img" src="{{ user.person.profile_image.url }}"/>
             </div>
-            <div class="panel-group">
-                {% for post in post_list %}
-                    <div class="panel panel-primary">
-                        <div class="panel-heading">
-                            <h3 style="display: inline">{{ post.title }}</h3>
-                        </div>
-                        <div class="panel-body">
-                            {{ post.context }}
-                        </div>
-                        <div class="panel-footer">
-                            <div class="panel-author"> {{ post.author }}</div>
-                            <div class="panel-date">{{ post.publish_time }}</div>
-                            <br style="clear: both"/>
-                        </div>
-                    </div>
-                    <br style="clear: both"/>
-                {% endfor %}
-            
+            <div class="name">
+                <h1><b>{{ user.get_full_name }}</b></h1>
             </div>
-            <br style="clear: both"/>
         </div>
-    </body>
-</html>
+        <div class="panel-group">
+            {% for post in post_list %}
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 style="display: inline">{{ post.title }}</h3>
+                    </div>
+                    <div class="panel-body">
+                        {{ post.context }}
+                    </div>
+                    <div class="panel-footer">
+                        <div class="panel-author"> {{ post.author }}</div>
+                        <div class="panel-date">{{ post.publish_time }}</div>
+                        <br style="clear: both"/>
+                    </div>
+                </div>
+                <br style="clear: both"/>
+            {% endfor %}
+
+        </div>
+        <br style="clear: both"/>
+    </div>
+{% endblock %}
