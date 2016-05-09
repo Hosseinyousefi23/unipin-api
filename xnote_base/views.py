@@ -225,3 +225,7 @@ def new_post(request):
         author.post_set.create(title=title, context=context, publish_time=timezone.now(), author=author,
                                is_public=is_public)
         return HttpResponseRedirect(reverse("xnote_base:view_page", kwargs={'name': author_name}))
+
+
+def new_group_page(request):
+    return render(request, 'xnote_base/create_new_group.html', {})
