@@ -1,22 +1,22 @@
 {% load staticfiles %}
 
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    {% block title %}
-    {% endblock %}
-    <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
-    <script src="{% static 'javascript/semantic.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
-    <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
+    <head lang="en">
+        <meta charset="UTF-8">
+        {% block title %}
+        {% endblock %}
+        <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}"/>
+        <script src="{% static 'javascript/semantic.min.js' %}"></script>
+        {#        <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">#}
+        {#        <script src="{% static 'javascript/bootstrap.min.js' %}"></script>#}
 
-    {% block add_css_and_js %}
-    {% endblock %}
-</head>
-<body>
-<h1>
-        you are as {{ user.get_full_name }}</h1>
+        {% block add_css_and_js %}
+        {% endblock %}
+    </head>
+    <body>
+        <h1>
+            you are as {{ user.get_full_name }}</h1>
         <a href="{% url 'xnote_base:main_page' %}">
             <button>Home</button>
         </a>
@@ -35,8 +35,11 @@
         <a href="{% url 'xnote_base:new_post' %}">
             <button>New post</button>
         </a>
+        <a href="{% url 'xnote_base:new_group' %}">
+            <button>New Group</button>
+        </a>
         <br style="clear: both"/>
-{% block body %}
-{% endblock %}
-</body>
+        {% block body %}
+        {% endblock %}
+    </body>
 </html>

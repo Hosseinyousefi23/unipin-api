@@ -2,10 +2,12 @@
 {% load staticfiles %}
 
 {% block title %}
-        <title>{{ user.get_full_name }}</title>
+    <title>{{ user.get_full_name }}</title>
 {% endblock %}
 
 {% block add_css_and_js %}
+    <link rel="stylesheet" href="{% static 'styles/bootstrap.min.css' %}">
+    <script src="{% static 'javascript/bootstrap.min.js' %}"></script>
     <link type="text/css" rel="stylesheet" href="{% static 'styles/userindex.css' %}"/>
     <script src="{% static 'javascript/userindex.js' %}"></script>
 {% endblock %}

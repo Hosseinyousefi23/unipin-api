@@ -10,3 +10,7 @@ function readURL(input) {
         reader.readAsDataURL(input.files[0]);
     }
 }
+
+function showFileChooser() {
+    $('#upload_image').click();
+}
