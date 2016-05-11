@@ -65,17 +65,11 @@ def login_view(request):
         if user is not None:
             if user.is_active:
                 login(request, user)
-                return JsonResponse({
-                    'message': 'redirect to main page'
-                })
+                return HttpResponse('ok')
             else:
-                return JsonResponse({
-                    'message': 'you cannot login because you are blocked.'
-                })
+                return HttpResponse('not_active')
         else:
-            return JsonResponse({
-                'message': 'username or password is wrong. please check your spelling and try again...'
-            })
+            return HttpResponse('wrong')
     else:
         username = request.POST['username']
         password = request.POST['password']
