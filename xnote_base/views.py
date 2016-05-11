@@ -19,7 +19,7 @@ def main_page(request):
             Q(url_name=person.url_name) | Q(followers__url_name=person.url_name))
         if 'platform' in request.GET and request.GET['platform'] == 'android':
             return JsonResponse({
-              'user': request.user.first_name + ' ' + request.user.last_name,
+                'user': request.user.first_name + ' ' + request.user.last_name,
                 'post_list': serializers.serialize('json', post_list),
                 'suggestions': serializers.serialize('json', suggestions),
             })
@@ -58,23 +58,36 @@ def my_profile(request):
 
 
 def login_view(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        if user.is_active:
-            login(request, user)
-            if 'platform' in request.GET and request.GET['platform'] == 'android':
+    if 'platform' in request.GET and request.GET['platform'] == 'android':
+        username = request.GET['username']
+        password = request.GET['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
                 return JsonResponse({
                     'message': 'redirect to main page'
                 })
-
             else:
-                return HttpResponseRedirect(reverse('xnote_base:main_page'))
+                return JsonResponse({
+                    'message': 'you cannot login because you are blocked.'
+                })
         else:
-            return HttpResponse('you cannot login because you are blocked.')
+            return JsonResponse({
+                'message': 'username or password is wrong. please check your spelling and try again...'
+            })
     else:
-        return HttpResponse('username or password is wrong. please check your spelling and try again...')
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return HttpResponseRedirect(reverse('xnote_base:main_page'))
+            else:
+                return HttpResponse('you cannot login because you are blocked.')
+        else:
+            return HttpResponse('username or password is wrong. please check your spelling and try again...')
 
 
 def signup(request):
@@ -230,5 +243,9 @@ def new_post(request):
 def new_group(request):
     return render(request, 'xnote_base/create_new_group.html', {})
 
+
 def new_group_action(request):
-    pass
+    group_name = request.POST['group_name']
+    group_description = request.POST['group_description']
+    image = request.POST['image']
+    print(image)

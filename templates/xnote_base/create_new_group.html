@@ -9,21 +9,21 @@
 {% endblock %}
 {% block body %}
     <div dir="rtl">
-        <form action="{% url 'xnote_base:new_group_action' %}">
+        <form action="{% url 'xnote_base:new_group_action' %}" method="post">
             {% csrf_token %}
             <div id="top_div">
                 <div id="image_div">
                     <img class="ui small circular image" onclick="showFileChooser()" id="profile_img"
                          src="{% static 'image/group-circled.svg' %}">
                     {#this button is for uploading the group profile image#}
-                    <input type="file" id="upload_image" onchange="readURL(this)" class="circular ui icon button"
+                    <input type="file" id="upload_image" name="image" onchange="readURL(this)" class="circular ui icon button"
                            style="display: none">
                     <i class="icon camera"></i>
                     </input>
                 </div>
                 <div id="group_name_div" class="ui left icon input">
                     {#            this field is for putting the name of the groups#}
-                    <input id="group_name_input" type="text" placeholder="نام گروه">
+                    <input id="group_name_input" name="group_name" type="text" placeholder="نام گروه">
                     <i class="users icon"></i>
                 </div>
             </div>
@@ -31,7 +31,7 @@
 
             <div class="field" id="description_div">
                 {#        this textarea is for adding some descriptions about the groups #}
-        <textarea id="group_description_text_area" rows="4" cols="80"
+        <textarea id="group_description_text_area" name="group_description" rows="4" cols="80"
                   placeholder="توضیحی در مورد گروه ( این متن به کاربر ها جهت معرفی گروه شما نشان داده خواهد شد ) ."></textarea>
             </div>
             <div class="ui divider"></div>
