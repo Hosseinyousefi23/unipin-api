@@ -35,7 +35,7 @@ class SuperConductor(models.Model):
     profile_image = models.ImageField(upload_to='profile_image', null=True, blank=True)
 
     def __str__(self):
-        return self.url_name
+        return self.real_name
 
 
 # ------------------------------------------------------------------------
@@ -46,9 +46,6 @@ class Person(SuperConductor):
     sharif_mail_address = models.EmailField(null=True, blank=True)
     interested_tags = models.ManyToManyField(Tag, blank=True)
     follows = models.ManyToManyField(SuperConductor, through='Follow', related_name='followers')
-
-    def __str__(self):
-        return self.user.username
 
 
 # ------------------------------------------------------------------------
