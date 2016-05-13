@@ -22,6 +22,7 @@ def main_page(request):
                 'user': request.user.first_name + ' ' + request.user.last_name,
                 'post_list': serializers.serialize('json', post_list),
                 'suggestions': serializers.serialize('json', suggestions),
+                'author_list': serializers.serialize('json', person.follows.all()),
             })
         else:
             return render(request, 'xnote_base/userindex.html', {
