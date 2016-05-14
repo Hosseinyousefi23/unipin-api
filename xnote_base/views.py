@@ -6,7 +6,9 @@ from django.core.urlresolvers import reverse
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
-from xnote_base.models import Person, Post, SuperConductor, Follow, SuperInstitution
+from xnote.settings import MEDIA_URL
+from xnote_base.forms import LoginForm
+from xnote_base.models import Person, Post, SuperConductor, Follow, SuperInstitution, PROFILE_IMAGES_PATH
 from django.db.models import Q
 
 
@@ -35,7 +37,8 @@ def main_page(request):
         if 'platform' in request.GET and request.GET['platform'] == 'android':
             return JsonResponse({'post_list': serializers.serialize('json', post_list)})
         else:
-            return render(request, 'xnote_base/index.html', {'post_list': post_list})
+            form = LoginForm()
+            return render(request, 'xnote_base/index.html', {'post_list': post_list, 'form': form})
 
 
 @login_required
@@ -72,9 +75,8 @@ def login_view(request):
         else:
             return HttpResponse('wrong')
     else:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(username=username, password=password)
+        login_form = LoginForm(request.POST)
+        user = authenticate(username=login_form.username, password=login_form.password)
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -242,5 +244,16 @@ def new_group(request):
 def new_group_action(request):
     group_name = request.POST['group_name']
     group_description = request.POST['group_description']
-    image = request.POST['image']
-    print(image)
+    image = request.FILES['image']
+    handle_uploaded_file(image, group_name)
+    return HttpResponse()
+
+
+# save given file
+def handle_uploaded_file(f, conductor_name):
+    destination = open(MEDIA_URL + PROFILE_IMAGES_PATH + '/' + conductor_name + '_' + f.name, 'wb+')
+    for chunk in f.chunks():
+        destination.write(chunk)
+    destination.close()
+
+

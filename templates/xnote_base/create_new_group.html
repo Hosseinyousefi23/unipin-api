@@ -9,14 +9,15 @@
 {% endblock %}
 {% block body %}
     <div dir="rtl">
-        <form action="{% url 'xnote_base:new_group_action' %}" method="post">
+        <form action="{% url 'xnote_base:new_group_action' %}" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             <div id="top_div">
                 <div id="image_div">
                     <img class="ui small circular image" onclick="showFileChooser()" id="profile_img"
                          src="{% static 'image/group-circled.svg' %}">
                     {#this button is for uploading the group profile image#}
-                    <input type="file" id="upload_image" name="image" onchange="readURL(this)" class="circular ui icon button"
+                    <input type="file" id="upload_image" name="image" onchange="readURL(this)"
+                           class="circular ui icon button"
                            style="display: none">
                     <i class="icon camera"></i>
                     </input>
