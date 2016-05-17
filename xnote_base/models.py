@@ -187,7 +187,7 @@ class Post(models.Model):
 
 class Group(SuperInstitution):
     is_department_group = models.BooleanField(default=False)
-    related_university = models.ForeignKey(University, null=True, related_name="related_groups")
+    related_university = models.ForeignKey(University, null=True, blank=True, related_name="related_groups")
 
     def __str__(self):
         return self.superInstitution.name

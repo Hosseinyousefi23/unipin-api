@@ -1,14 +1,15 @@
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.http.response import Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from xnote.settings import MEDIA_URL
-from xnote_base.forms import LoginForm
-from xnote_base.models import Person, Post, SuperConductor, Follow, SuperInstitution, PROFILE_IMAGES_PATH
+from xnote_base.forms import LoginForm, GroupForm
+from xnote_base.models import Person, Post, SuperConductor, Follow, SuperInstitution, PROFILE_IMAGES_PATH, Group
 from django.db.models import Q
 
 
@@ -76,15 +77,21 @@ def login_view(request):
             return HttpResponse('wrong')
     else:
         login_form = LoginForm(request.POST)
-        user = authenticate(username=login_form.username, password=login_form.password)
-        if user is not None:
-            if user.is_active:
-                login(request, user)
-                return HttpResponseRedirect(reverse('xnote_base:main_page'))
+        if login_form.is_valid():
+            user = authenticate(username=login_form.cleaned_data['username'],
+                                password=login_form.cleaned_data['password'])
+
+            if user is not None:
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect(reverse('xnote_base:main_page'))
+                else:
+                    return HttpResponse('you cannot login because you are blocked.')
             else:
-                return HttpResponse('you cannot login because you are blocked.')
+                return HttpResponse('username or password is wrong. please check your spelling and try again...')
         else:
-            return HttpResponse('username or password is wrong. please check your spelling and try again...')
+            post_list = Post.objects.filter(author__is_formal=True, is_public=True).order_by('-publish_time')
+            return render(request, 'xnote_base/index.html', {'form': login_form, 'post_list': post_list})
 
 
 def signup(request):
@@ -238,22 +245,18 @@ def new_post(request):
 
 
 def new_group(request):
-    return render(request, 'xnote_base/create_new_group.html', {})
+    group_form = GroupForm()
+    return render(request, 'xnote_base/create_new_group.html', {'form': group_form})
 
 
 def new_group_action(request):
-    group_name = request.POST['group_name']
-    group_description = request.POST['group_description']
-    image = request.FILES['image']
-    handle_uploaded_file(image, group_name)
-    return HttpResponse()
-
-
-# save given file
-def handle_uploaded_file(f, conductor_name):
-    destination = open(MEDIA_URL + PROFILE_IMAGES_PATH + '/' + conductor_name + '_' + f.name, 'wb+')
-    for chunk in f.chunks():
-        destination.write(chunk)
-    destination.close()
+    group_form = GroupForm(request.POST)
+    group = group_form.save(commit=False)
+    group.real_type = ContentType.objects.get(model='group', app_label='xnote_base')
+    group.is_department_group = False
+    group.is_formal = False
+    group.save()
+    group_form.save_m2m()
+    return HttpResponseRedirect(reverse('xnote_base:view_page', kwargs={'name': group.url_name}))
 
 
