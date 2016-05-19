@@ -9,7 +9,7 @@
 {% endblock %}
 {% block body %}
     <div dir="rtl">
-        <form action="{% url 'xnote_base:new_group_action' %}" method="post">
+        <form action="{% url 'xnote_base:new_group_action' %}" method="get">
             {% csrf_token %}
             <div id="top_div">
                 <div id="image_div">
@@ -39,11 +39,30 @@
                 {#            choosing tags section : should use 'ajax' and change <a> tags to button later #}
                 <p>از میان تگ های زیر انتخاب کنید ( حداکثر ۳ تگ مجاز است )</p>
 
-                <input type="checkbox" name="elmi" class="ui red circular label">علمی
-                <input type="checkbox" name="farhangi" class="ui orange circular label">فرهنگی
-                <input type="checkbox" name="siasi" class="ui yellow circular label">سیاسی
-                <input type="checkbox" name="varzeshi" class="ui olive circular label">ورزشی
-                <input type="checkbox" name="honari" class="ui green circular label">هنری
+                <a class="ui red circular label" name="elmi" onclick="activeCheckboxesOnClick(this)">
+                    علمی
+                </a>
+                <input type="checkbox" name="elmi" class="ui red circular label" style="display: none">
+
+                <a class="ui orange circular label" name="farhangi" onclick="activeCheckboxesOnClick(this)">
+فرهنگی
+                </a>
+                <input type="checkbox" name="farhangi" class="ui orange circular label" style="display: none">
+
+                <a class="ui yellow circular label" name="siasi" onclick="activeCheckboxesOnClick(this)">
+سیاسی
+                </a>
+                <input type="checkbox" name="siasi" class="ui yellow circular label" style="display: none">
+
+                <a class="ui olive circular label" name="varzeshi" onclick="activeCheckboxesOnClick(this)">
+ورزشی
+                </a>
+                <input type="checkbox" name="varzeshi" class="ui olive circular label" style="display: none">
+
+                <a class="ui green circular label" name="honari" onclick="activeCheckboxesOnClick(this)">
+هنر
+                </a>
+                <input type="checkbox" name="honari" class="ui green circular label" style="display: none">
 
             </div>
             <div class="ui divider"></div>

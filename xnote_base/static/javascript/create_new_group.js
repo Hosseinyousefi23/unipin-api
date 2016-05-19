@@ -14,3 +14,16 @@ function readURL(input) {
 function showFileChooser() {
     $('#upload_image').click();
 }
+
+function activeCheckboxesOnClick(element) {
+    var e = $(element);
+    var x = $('input[name=' + e.prop('name') + ']');
+
+    x.prop('checked', !x.prop('checked'));
+
+    if(x.prop('checked'))
+        e.css('border', '10px solid');
+
+    else
+        e.css('border', '0');
+}

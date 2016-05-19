@@ -244,3 +244,6 @@ def new_group_action(request):
     group_description = request.POST['group_description']
     image = request.POST['image']
     print(image)
+
+def single_post(request):
+    return render(request, '../templates/xnote_base/single_post.html', {})

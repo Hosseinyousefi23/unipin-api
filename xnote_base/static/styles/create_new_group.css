@@ -150,3 +150,7 @@
       width:50%;
     margin:0 auto 0 auto;
 }
+
+#tags_div .ui.olive.circular.label {
+    border-color: #e0e0e0!important;
+}

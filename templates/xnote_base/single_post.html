@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,15 +6,16 @@
     <meta charset="UTF-8">
     <meta name="description" content="" />
     <meta name="keywords" content="" />
-    
-    <link rel="stylesheet" type="text/css" href="static/semantic/semantic.min.css" />
-    <script src="static/semantic/semantic.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="style_2.css">
+
+    <script src="{% static 'javascript/jquery-1.12.0.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/semantic.min.css' %}" />
+    <script src="{% static 'javascript/semantic.min.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles/index.css' %}">
 </head>
 <body id="body_id" id ="create_new_group_body" dir="rtl">
      <div id="top_div">
         <div id="image_div">
-            <img class="ui small circular image" src="images/group-circled.svg">
+            <img class="ui small circular image" src="{% static 'image/group-circled.svg' %}">
         </div>
         <div id="group_name_div" class="ui left icon input">
             <p id="group_name">اسم گروه</p>
@@ -22,7 +24,7 @@
     <div class="ui divider"></div>
     <div class ="header_content"><center><p>این جا باید هدر پست رو بزاریم !</p></center></div>
     
-    <div class ="post_image_div"><img class ="post_image" src="images/default-post.jpg"/></div>
+    <div class ="post_image_div"><img class ="post_image" src="{% static 'image/default-post.jpg' %}"/></div>
     
     <div class ="main_content"><p>این جا باید با متن اصلی داستان شه ... این جا باید با متن اصلی داستان شه ... این جا باید با متن اصلی داستان شه ... این جا باید با متن اصلی داستان شه ... این جا باید با متن اصلی داستان شه ... این جا باید با متن اصلی داستان شه ... این جا باید با متن اصلی داستان شه ... این جا باید با متن اصلی داستان شه ... </p></div>
     
