@@ -3,6 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 
+PROFILE_IMAGES_PATH = 'profile_image'
+
 
 class Tag(models.Model):
     pass
@@ -32,7 +34,7 @@ class SuperConductor(models.Model):
     real_type = models.ForeignKey(ContentType)
     url_name = models.CharField(max_length=100, null=True, blank=True)
     is_formal = models.BooleanField(default=False)
-    profile_image = models.ImageField(upload_to='profile_image', null=True, blank=True)
+    profile_image = models.ImageField(upload_to=PROFILE_IMAGES_PATH, null=True, blank=True)
 
     def __str__(self):
         return self.real_name
@@ -185,7 +187,7 @@ class Post(models.Model):
 
 class Group(SuperInstitution):
     is_department_group = models.BooleanField(default=False)
-    related_university = models.ForeignKey(University, null=True, related_name="related_groups")
+    related_university = models.ForeignKey(University, null=True, blank=True, related_name="related_groups")
 
     def __str__(self):
         return self.superInstitution.name
