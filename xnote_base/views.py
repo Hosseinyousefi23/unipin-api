@@ -94,6 +94,10 @@ def login_view(request):
             return render(request, 'xnote_base/index.html', {'form': login_form, 'post_list': post_list})
 
 
+def forgot_password(request):
+    return render(request, 'xnote_base/forgot_password.html', {})
+
+
 def signup(request):
     if request.method == 'POST':
         post = request.POST
@@ -258,6 +262,7 @@ def new_group_action(request):
     group.save()
     group_form.save_m2m()
     return HttpResponseRedirect(reverse('xnote_base:view_page', kwargs={'name': group.url_name}))
+
 
 def single_post(request):
     return render(request, '../templates/xnote_base/single_post.html', {})

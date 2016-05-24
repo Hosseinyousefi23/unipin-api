@@ -23,12 +23,14 @@
         <a href="{% url 'xnote_base:signup' %}">
             <button>Sign_up</button>
         </a>
+        <br/>
 
-        <form action="{% url 'xnote_base:login' %}" method="post">
+        <form style="display: inline" action="{% url 'xnote_base:login' %}" method="post">
             {% csrf_token %}
             {{ form }}
             <input type="submit" value="login"/>
         </form>
+        <a href="{% url 'xnote_base:forgot' %}">Forgot Password</a>
 
         {% block body %}
         {% endblock %}
