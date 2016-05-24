@@ -250,15 +250,6 @@ def new_group(request):
 
 
 def new_group_action(request):
-<<<<<<< HEAD
-    group_name = request.POST['group_name']
-    group_description = request.POST['group_description']
-    image = request.POST['image']
-    print(image)
-
-def single_post(request):
-    return render(request, '../templates/xnote_base/single_post.html', {})
-=======
     group_form = GroupForm(request.POST)
     group = group_form.save(commit=False)
     group.real_type = ContentType.objects.get(model='group', app_label='xnote_base')
@@ -268,5 +259,5 @@ def single_post(request):
     group_form.save_m2m()
     return HttpResponseRedirect(reverse('xnote_base:view_page', kwargs={'name': group.url_name}))
 
-
->>>>>>> origin/master
+def single_post(request):
+    return render(request, '../templates/xnote_base/single_post.html', {})
