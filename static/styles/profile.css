@@ -1,0 +1,52 @@
+body {
+    font-family: "cursive";
+    background-color: beige;
+    overflow-y: scroll;
+}
+
+.post-container {
+    width: 80%;
+    margin: auto;
+    background-color: white;
+    border: solid black 2px;
+}
+
+.panel-group {
+    width: 100%;
+    float: left;
+    margin-right: 10px;
+}
+
+.panel-primary {
+    margin: 10px;
+}
+
+.panel-date {
+    float: right;
+
+}
+
+.panel-author {
+    width: 10%;
+    display: inline;
+    /*float: left;*/
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+#img {
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+}
+
+.image {
+    float: left;
+}
+
+.name {
+    float: left;
+    margin-top: 20px;
+}

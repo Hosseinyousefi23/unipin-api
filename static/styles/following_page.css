@@ -1,0 +1,19 @@
+body {
+    font-family: "cursive";
+    background-color: beige;
+    overflow-y: scroll;
+
+}
+
+.image {
+    width: 100% !important;
+    height: 200px !important;
+}
+
+.ui.cards {
+    /*float: left;*/
+}
+
+a:hover {
+    text-decoration: none;
+}
