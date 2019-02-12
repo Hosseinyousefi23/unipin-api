@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import viewsets
+from rest_framework.permissions import AllowAny
 
 from xnote_base.forms import LoginForm
 from xnote_base.models import Person, Post
@@ -16,6 +17,7 @@ from xnote_base.serializers import PostSerializer
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
+    permission_classes = (AllowAny,)
 
 
 def main_page(request):
