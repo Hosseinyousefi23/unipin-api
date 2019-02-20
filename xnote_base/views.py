@@ -15,7 +15,7 @@ from xnote_base.serializers import PostSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-publish_time')
     serializer_class = PostSerializer
     permission_classes = (AllowAny,)
 

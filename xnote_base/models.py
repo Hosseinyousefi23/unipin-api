@@ -3,6 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 
+from xnote_base import static
+
 PROFILE_IMAGES_PATH = 'profile_image'
 
 
@@ -60,21 +62,26 @@ class Person(models.Model):
 
 class Post(models.Model):
     # invited = models.ManyToManyField(Person, related_name='invite_list')
-    creation_date = models.DateTimeField(default=timezone.now)
-    tags = models.ManyToManyField(Tag)
-    title = models.CharField(max_length=100)
+    # creation_date = models.DateTimeField(default=timezone.now)
+    tags = models.ManyToManyField(Tag, blank=True)
+    title = models.CharField(max_length=100, null=True, blank=True)
     # related_tags = models.ManyToManyField(Tag, blank=True)
-    context = models.TextField(default='')
+    context = models.TextField(null=True, blank=True)
     publish_time = models.DateTimeField(default=timezone.now)
+    event_start_time = models.DateTimeField(null=True, blank=True)
+    event_end_time = models.DateTimeField(null=True, blank=True)
+    event_place = models.TextField(null=True, blank=True)
     author = models.ForeignKey(Person, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     view = models.IntegerField(default=0, verbose_name='دیده شده')
     click = models.IntegerField(default=0, verbose_name='کلیک')
     attend = models.IntegerField(default=0, verbose_name='شرکت کردن',
                                  help_text='تعداد افرادی که در این رویداد شرکت می کنند')
+    university = models.CharField(choices=static.UNIS, default='Sharif', max_length=50)
 
     def __str__(self):
-        return self.title
+        return self.title if self.title else "%s's post".format(self.author.formal_name)
+
 # class Permission(models.Model):
 #     pass
 #     """
@@ -85,7 +92,8 @@ class Post(models.Model):
 #     name = models.CharField(max_length=50)
 #
 #     def __str__(self):
-#         return self.name
+#         return self.name3
+
 
 
 # ------------------------------------------------------------------------
