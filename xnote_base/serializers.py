@@ -9,7 +9,8 @@ class PostSerializer(serializers.ModelSerializer):
     class Meta:
         depth = 1
         model = Post
-        fields = ('id', 'author', 'title', 'image', 'publish_time', 'context', 'university', 'tags')
+        fields = ('id', 'author', 'title', 'image', 'publish_time', 'event_start_time', 'event_end_time', 'event_place',
+                  'context', 'university', 'tags')
 
 
 class PersonSerializer(serializers.ModelSerializer):
