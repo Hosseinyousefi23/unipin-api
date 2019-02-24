@@ -47,14 +47,17 @@ class Person(models.Model):
     description = models.CharField(max_length=1000, default='Nothing')
     url_name = models.CharField(max_length=100, null=True, blank=True)
     profile_image = models.ImageField(upload_to=PROFILE_IMAGES_PATH, null=True, blank=True)
-    # real_type = models.ForeignKey(ContentType)
 
-    # is_formal = models.BooleanField(default=False)
+    def __str__(self):
+        return self.formal_name
+        # real_type = models.ForeignKey(ContentType)
 
-    # national_id = models.CharField(max_length=100, null=True, blank=True)
-    # sharif_mail_address = models.EmailField(null=True, blank=True)
-    # interested_tags = models.ManyToManyField(Tag, blank=True)
-    # follows = models.ManyToManyField(SuperConductor, through='Follow', related_name='followers')
+        # is_formal = models.BooleanField(default=False)
+
+        # national_id = models.CharField(max_length=100, null=True, blank=True)
+        # sharif_mail_address = models.EmailField(null=True, blank=True)
+        # interested_tags = models.ManyToManyField(Tag, blank=True)
+        # follows = models.ManyToManyField(SuperConductor, through='Follow', related_name='followers')
 
 
 # ------------------------------------------------------------------------

@@ -11,13 +11,20 @@ from rest_framework.permissions import AllowAny
 
 from xnote_base.forms import LoginForm
 from xnote_base.models import Person, Post
-from xnote_base.serializers import PostSerializer
+from xnote_base.serializers import PostSerializer, PersonSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all().order_by('-publish_time')
     serializer_class = PostSerializer
     permission_classes = (AllowAny,)
+
+
+class PersonViewSet(viewsets.ModelViewSet):
+    queryset = Person.objects.all()
+    serializer_class = PersonSerializer
+    permission_classes = (AllowAny,)
+    lookup_field = 'url_name'
 
 
 def main_page(request):

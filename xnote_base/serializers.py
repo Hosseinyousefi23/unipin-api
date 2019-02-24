@@ -15,4 +15,4 @@ class PostSerializer(serializers.ModelSerializer):
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ('user__formal_name', 'profile_image',)
+        fields = ('formal_name', 'profile_image', 'url_name',)
