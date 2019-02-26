@@ -10,7 +10,7 @@ class PostSerializer(serializers.ModelSerializer):
         depth = 1
         model = Post
         fields = ('id', 'author', 'title', 'image', 'publish_time', 'event_start_time', 'event_end_time', 'event_place',
-                  'context', 'university', 'tags',)
+                  'context', 'university', 'tags', 'event_status', )
 
 
 class PersonSerializer(serializers.ModelSerializer):
