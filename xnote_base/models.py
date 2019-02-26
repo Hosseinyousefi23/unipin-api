@@ -43,7 +43,7 @@ class Tag(models.Model):
 
 class Person(models.Model):
     user = models.OneToOneField(User, related_name='person', on_delete=models.CASCADE)
-    formal_name = models.CharField(max_length=50)
+    formal_name = models.CharField(max_length=25)
     description = models.CharField(max_length=1000, default='Nothing')
     url_name = models.CharField(max_length=100, null=True, blank=True)
     profile_image = models.ImageField(upload_to=PROFILE_IMAGES_PATH, null=True, blank=True)
@@ -76,11 +76,28 @@ class Post(models.Model):
     event_place = models.TextField(null=True, blank=True)
     author = models.ForeignKey(Person, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
+    is_expired = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     view = models.IntegerField(default=0, verbose_name='دیده شده')
     click = models.IntegerField(default=0, verbose_name='کلیک')
     attend = models.IntegerField(default=0, verbose_name='شرکت کردن',
                                  help_text='تعداد افرادی که در این رویداد شرکت می کنند')
     university = models.CharField(choices=static.UNIS, default='Sharif', max_length=50)
+
+    def event_status(self):
+        start = self.event_start_time
+        end = self.event_end_time
+        if self.is_expired:
+            return 0  # expired
+        now = timezone.now()
+        if start and now < start:
+            return 2  # not started
+        if end and now > end:
+            return 0  # expired
+        if start and end and start <= now < end:
+            return 3  # during
+        else:
+            return 1  # no label
 
     def __str__(self):
         return self.title if self.title else "%s's post".format(self.author.formal_name)
