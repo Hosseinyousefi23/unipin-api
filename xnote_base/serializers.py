@@ -10,10 +10,10 @@ class PostSerializer(serializers.ModelSerializer):
         depth = 1
         model = Post
         fields = ('id', 'author', 'title', 'image', 'publish_time', 'event_start_time', 'event_end_time', 'event_place',
-                  'context', 'university', 'tags', 'event_status', )
+                  'context', 'university', 'tags', 'event_status',)
 
 
 class PersonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Person
-        fields = ('formal_name', 'profile_image', 'url_name', 'description', )
+        fields = ('formal_name', 'profile_image', 'url_name', 'description',)

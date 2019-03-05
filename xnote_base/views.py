@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 from django.utils import timezone
 from rest_framework import viewsets
+from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
 
 from xnote_base.forms import LoginForm
@@ -19,12 +20,27 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     permission_classes = (AllowAny,)
 
+    # def get_queryset(self):
+    #     queryset = Post.objects.filter(is_active=True)
+    #     unsorted = sorted(queryset.all(), key=lambda o: o.event_status())
+    #     return queryset
+
 
 class PersonViewSet(viewsets.ModelViewSet):
     queryset = Person.objects.all()
     serializer_class = PersonSerializer
     permission_classes = (AllowAny,)
     lookup_field = 'url_name'
+
+
+class Offers(ListAPIView):
+    permission_classes = (AllowAny,)
+    serializer_class = PostSerializer
+
+    def get_queryset(self):
+        post_id = self.request.GET['id']
+        post = Post.objects.get(pk=post_id)
+        return Post.objects.filter(tags__in=post.tags.all())
 
 
 def main_page(request):
