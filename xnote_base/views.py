@@ -11,8 +11,8 @@ from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
 
 from xnote_base.forms import LoginForm
-from xnote_base.models import Person, Post
-from xnote_base.serializers import PostSerializer, PersonSerializer
+from xnote_base.models import Person, Post, Tag
+from xnote_base.serializers import PostSerializer, PersonSerializer, TagSerializer
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -41,6 +41,12 @@ class Offers(ListAPIView):
         post_id = self.request.GET['id']
         post = Post.objects.get(pk=post_id)
         return Post.objects.filter(tags__in=post.tags.all())
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    queryset = Tag.objects.filter(active=True)
+    permission_classes = (AllowAny,)
+    serializer_class = TagSerializer
 
 
 def main_page(request):
