@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from xnote_base.models import Post, Person, Tag
+from api.models import Post, Tag
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -11,12 +11,6 @@ class PostSerializer(serializers.ModelSerializer):
         model = Post
         fields = ('id', 'author', 'title', 'image', 'publish_time', 'event_start_time', 'event_end_time', 'event_place',
                   'context', 'university', 'tags', 'event_status',)
-
-
-class PersonSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Person
-        fields = ('formal_name', 'profile_image', 'url_name', 'description',)
 
 
 class TagSerializer(serializers.ModelSerializer):

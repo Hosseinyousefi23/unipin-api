@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -10,9 +11,11 @@ from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
 
-from xnote_base.forms import LoginForm
-from xnote_base.models import Person, Post, Tag
-from xnote_base.serializers import PostSerializer, PersonSerializer, TagSerializer
+from api.forms import LoginForm
+from api.models import Post, Tag
+from api.serializers import PostSerializer, TagSerializer
+
+Person = get_user_model()
 
 
 class PostViewSet(viewsets.ModelViewSet):
@@ -24,14 +27,6 @@ class PostViewSet(viewsets.ModelViewSet):
     #     queryset = Post.objects.filter(is_active=True)
     #     unsorted = sorted(queryset.all(), key=lambda o: o.event_status())
     #     return queryset
-
-
-class PersonViewSet(viewsets.ModelViewSet):
-    queryset = Person.objects.all()
-    serializer_class = PersonSerializer
-    permission_classes = (AllowAny,)
-    lookup_field = 'url_name'
-
 
 class Offers(ListAPIView):
     permission_classes = (AllowAny,)
@@ -51,8 +46,7 @@ class TagViewSet(viewsets.ModelViewSet):
 
 def main_page(request):
     if request.user.is_authenticated:
-        user = request.user
-        person = Person.objects.get(user__username=user.username)
+        person = request.user
         event_list = Post.objects.order_by('-publish_time')
         # suggestions = Person.objects.exclude(
         #     Q(url_name=person.url_name) | Q(followers__url_name=person.url_name))
@@ -64,7 +58,7 @@ def main_page(request):
                 'author_list': serializers.serialize('json', person.follows.all()),
             })
         else:
-            return render(request, 'xnote_base/userindex.html', {
+            return render(request, 'api/userindex.html', {
                 'user': request.user,
                 'event_list': event_list,
                 # 'suggestions': suggestions,
@@ -75,7 +69,7 @@ def main_page(request):
             return JsonResponse({'event_list': serializers.serialize('json', event_list)})
         else:
             form = LoginForm()
-            return render(request, 'xnote_base/index.html', {'event_list': event_list, 'form': form})
+            return render(request, 'api/index.html', {'event_list': event_list, 'form': form})
 
 
 @login_required
@@ -92,7 +86,7 @@ def my_profile(request):
             'event_list': serializers.serialize('json', event_list)
         })
     else:
-        return render(request, 'xnote_base/profile.html', {
+        return render(request, 'api/profile.html', {
             'user': request.user,
             'event_list': event_list,
         })
@@ -120,18 +114,18 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return HttpResponseRedirect(reverse('xnote_base:main_page'))
+                    return HttpResponseRedirect(reverse('api:main_page'))
                 else:
                     return HttpResponse('you cannot login because you are blocked.')
             else:
                 return HttpResponse('username or password is wrong. please check your spelling and try again...')
         else:
             event_list = Post.objects.filter(author__is_formal=True, is_public=True).order_by('-publish_time')
-            return render(request, 'xnote_base/index.html', {'form': login_form, 'event_list': event_list})
+            return render(request, 'api/index.html', {'form': login_form, 'event_list': event_list})
 
 
 def forgot_password(request):
-    return render(request, 'xnote_base/forgot_password.html', {})
+    return render(request, 'api/forgot_password.html', {})
 
 
 def signup(request):
@@ -151,14 +145,14 @@ def signup(request):
                 'message': 'redirect to main page'
             })
         else:
-            return HttpResponseRedirect(reverse('xnote_base:main_page'))
+            return HttpResponseRedirect(reverse('api:main_page'))
     else:
         if 'platform' in request.GET and request.GET['platform'] == 'android':
             return JsonResponse({
                 'message': 'sign-up page'
             })
         else:
-            return render(request, 'xnote_base/signup.html')
+            return render(request, 'api/signup.html')
 
 
 @login_required
@@ -171,7 +165,7 @@ def view_page(request, name):
             'post_list': serializers.serialize('json', post_list),
         })
     else:
-        return render(request, 'xnote_base/person.html', {
+        return render(request, 'api/person.html', {
             'person': person,
             'post_list': post_list,
 
@@ -188,7 +182,7 @@ def view_page(request, name):
 #             'follower_list': serializers.serialize('json', follower_list)
 #         })
 #     else:
-#         return render(request, 'xnote_base/followers_page.html', {
+#         return render(request, 'api/followers_page.html', {
 #             'user': request.user,
 #             'follower_list': follower_list,
 #         })
@@ -204,7 +198,7 @@ def view_page(request, name):
 #             'follower_list': serializers.serialize('json', followed_list)
 #         })
 #     else:
-#         return render(request, 'xnote_base/following_page.html', {
+#         return render(request, 'api/following_page.html', {
 #             'user': request.user,
 #             'followed_list': followed_list,
 #         })
@@ -218,7 +212,7 @@ def log_out(request):
             'message': 'redirect to main page'
         })
     else:
-        return HttpResponseRedirect(reverse('xnote_base:main_page'))
+        return HttpResponseRedirect(reverse('api:main_page'))
 
 
 def check_username(request):
@@ -248,7 +242,7 @@ def check_username(request):
 #     return HttpResponse('ok')
 
 def single_post(request):
-    return render(request, '../templates/xnote_base/single_post.html', {})
+    return render(request, '../templates/api/single_post.html', {})
 
 
 @login_required
@@ -272,7 +266,7 @@ def new_post(request):
                 # 'permission_group_list': serializers.serialize('json', permission_group_list),
             })
         else:
-            return render(request, 'xnote_base/new_post.html', {
+            return render(request, 'api/new_post.html', {
                 'person': user.person,
                 # 'permission_group_list': permission_group_list,
             })
@@ -284,19 +278,19 @@ def new_post(request):
         author = Person.objects.get(url_name=author_name)
         author.post_set.create(title=title, context=context, publish_time=timezone.now(), author=author,
                                is_public=is_public)
-        return HttpResponseRedirect(reverse("xnote_base:view_page", kwargs={'name': author_name}))
+        return HttpResponseRedirect(reverse("api:view_page", kwargs={'name': author_name}))
 
 # def new_group(request):
 #     group_form = GroupForm()
-#     return render(request, 'xnote_base/create_new_group.html', {'form': group_form})
+#     return render(request, 'api/create_new_group.html', {'form': group_form})
 
 
 # def new_group_action(request):
 #     group_form = GroupForm(request.POST)
 #     group = group_form.save(commit=False)
-#     group.real_type = ContentType.objects.get(model='group', app_label='xnote_base')
+#     group.real_type = ContentType.objects.get(model='group', app_label='api')
 #     group.is_department_group = False
 #     group.is_formal = False
 #     group.save()
 #     group_form.save_m2m()
-#     return HttpResponseRedirect(reverse('xnote_base:view_page', kwargs={'name': group.url_name}))
+#     return HttpResponseRedirect(reverse('api:view_page', kwargs={'name': group.url_name}))

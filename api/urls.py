@@ -1,15 +1,18 @@
-from django.conf.urls import url
+from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
 
-from xnote_base.views import PostViewSet, PersonViewSet, Offers, TagViewSet
+from api.views import PostViewSet, Offers, TagViewSet
 from . import views
 
-app_name = 'xnote_base'
 router = DefaultRouter()
 router.register(r'post', PostViewSet, base_name='post')
-router.register(r'person', PersonViewSet, base_name='person')
 router.register(r'tag', TagViewSet, base_name='tag')
-urlpatterns = router.urls
+
+urlpatterns = [
+    url(r'^auth/registration/', include('rest_auth.registration.urls')),
+    url(r'^auth/', include('rest_auth.urls')),
+]
+urlpatterns += router.urls
 urlpatterns += [
     url(r'offers', Offers.as_view(), name='offers'),
     url(r'^$', views.main_page, name='main_page'),

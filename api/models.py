@@ -3,9 +3,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils import timezone
 
-from xnote_base import static
-
-PROFILE_IMAGES_PATH = 'profile_image'
+from Unipin.settings import AUTH_USER_MODEL
+from api import static
 
 
 class Tag(models.Model):
@@ -42,27 +41,6 @@ class Tag(models.Model):
 
 # ------------------------------------------------------------------------
 
-class Person(models.Model):
-    user = models.OneToOneField(User, related_name='person', on_delete=models.CASCADE)
-    formal_name = models.CharField(max_length=25)
-    description = models.CharField(max_length=1000, default='Nothing')
-    url_name = models.CharField(max_length=100, null=True, blank=True)
-    profile_image = models.ImageField(upload_to=PROFILE_IMAGES_PATH, null=True, blank=True)
-
-    def __str__(self):
-        return self.formal_name
-        # real_type = models.ForeignKey(ContentType)
-
-        # is_formal = models.BooleanField(default=False)
-
-        # national_id = models.CharField(max_length=100, null=True, blank=True)
-        # sharif_mail_address = models.EmailField(null=True, blank=True)
-        # interested_tags = models.ManyToManyField(Tag, blank=True)
-        # follows = models.ManyToManyField(SuperConductor, through='Follow', related_name='followers')
-
-
-# ------------------------------------------------------------------------
-
 
 class Post(models.Model):
     # invited = models.ManyToManyField(Person, related_name='invite_list')
@@ -75,7 +53,7 @@ class Post(models.Model):
     event_start_time = models.DateTimeField(null=True, blank=True)
     event_end_time = models.DateTimeField(null=True, blank=True)
     event_place = models.TextField(null=True, blank=True)
-    author = models.ForeignKey(Person, on_delete=models.CASCADE)
+    author = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True)
     is_expired = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

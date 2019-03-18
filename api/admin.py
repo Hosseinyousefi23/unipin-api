@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-from xnote_base.models import Person, Tag, Post
+from api.models import Tag, Post
 
-admin.site.register(Person)
+
 admin.site.register(Tag)
 
 

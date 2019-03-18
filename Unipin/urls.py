@@ -22,7 +22,7 @@ from Unipin.settings import MEDIA_ROOT
 
 urlpatterns = [
     url(r'^media/(?P<path>.*)', serve, {'document_root': MEDIA_ROOT}),
-    url(r'^admin/?', admin.site.urls),
-    url(r'^api/v1/', include('xnote_base.urls')),
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/v1/', include('api.urls')),
     # url(r'^.*', TemplateView.as_view(template_name='home.html'), name="home")
 ]

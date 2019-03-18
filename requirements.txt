@@ -2,3 +2,9 @@ django
 djangorestframework
 pillow
 django-cors-headers
+djangorestframework-jwt
+cryptography
+raven
+django-rest-auth
+django-allauth
+sentry-sdk==0.7.6
