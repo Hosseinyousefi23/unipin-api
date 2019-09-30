@@ -1,5 +1,6 @@
 from django.conf.urls import url, include
 from rest_framework.routers import DefaultRouter
+from rest_framework_jwt.views import obtain_jwt_token, refresh_jwt_token
 
 from api.views import PostViewSet, Offers, TagViewSet
 from . import views
@@ -14,6 +15,8 @@ urlpatterns = [
 ]
 urlpatterns += router.urls
 urlpatterns += [
+    url(r'api-token-auth/', obtain_jwt_token),
+    url(r'api-token-refresh/', refresh_jwt_token),
     url(r'offers', Offers.as_view(), name='offers'),
     url(r'^$', views.main_page, name='main_page'),
     url(r'^settings$', views.settings, name='settings'),
