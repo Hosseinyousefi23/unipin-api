@@ -10,6 +10,8 @@ from django.utils import timezone
 from rest_framework import viewsets
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from api.forms import LoginForm
 from api.models import Post, Tag
@@ -27,6 +29,7 @@ class PostViewSet(viewsets.ModelViewSet):
     #     queryset = Post.objects.filter(is_active=True)
     #     unsorted = sorted(queryset.all(), key=lambda o: o.event_status())
     #     return queryset
+
 
 class Offers(ListAPIView):
     permission_classes = (AllowAny,)
@@ -279,6 +282,15 @@ def new_post(request):
         author.post_set.create(title=title, context=context, publish_time=timezone.now(), author=author,
                                is_public=is_public)
         return HttpResponseRedirect(reverse("api:view_page", kwargs={'name': author_name}))
+
+
+class TestAPi(APIView):
+    permission_classes = (AllowAny,)
+    allowed_methods = ('GET',)
+
+    # renderer_classes = (JSONRenderer,)
+    def get(self, request, format=None, ):
+        return Response("Bia inam server dige chi mikhay??????????????? :||||")
 
 # def new_group(request):
 #     group_form = GroupForm()
