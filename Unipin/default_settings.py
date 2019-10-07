@@ -158,11 +158,11 @@ STATICFILES_DIRS = [
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'public/assets')
 CORS_ORIGIN_ALLOW_ALL = True
-CORS_ORIGIN_WHITELIST = (
-    'localhost:4200',
-    'localhost:8000',
-    '127.0.0.1:8000',
-)
+# CORS_ORIGIN_WHITELIST = (
+#     'localhost:4200',
+#     'localhost:8000',
+#     '127.0.0.1:8000',
+# )
 
 SESSION_COOKIE_DOMAIN = '127.0.0.1'
 
