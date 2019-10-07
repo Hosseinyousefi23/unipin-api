@@ -26,7 +26,7 @@ SECRET_KEY = 'v)(lw^(sp2(ekwc(nt#y*m3sx*lj&n0*7p=l5@$1#9m)_=yt68'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['5.135.224.246']
 
 # Application definition
 
@@ -288,3 +288,4 @@ LOGGING = {
         },
     }
 }
+
