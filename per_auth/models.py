@@ -1,5 +1,5 @@
-from django.contrib.auth.base_user import BaseUserManager
-from django.contrib.auth.models import AbstractUser, PermissionsMixin
+from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
+from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -72,7 +72,7 @@ class PersonManager(BaseUserManager):
         return user
 
 
-class Person(AbstractUser, PermissionsMixin):
+class Person(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(
         verbose_name='email address',
         max_length=255,
@@ -106,15 +106,15 @@ class Person(AbstractUser, PermissionsMixin):
     def __str__(self):
         return self.email + ' <' + self.formal_name + '>'
 
-    def has_perm(self, perm, obj=None):
-        "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
-        return True
-
-    def has_module_perms(self, app_label):
-        "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
-        return True
+        # def has_perm(self, perm, obj=None):
+        #     "Does the user have a specific permission?"
+        #     # Simplest possible answer: Yes, always
+        #     return True
+        #
+        # def has_module_perms(self, app_label):
+        #     "Does the user have permissions to view the app `app_label`?"
+        #     # Simplest possible answer: Yes, always
+        #     return True
 
         # @property
         # def is_staff(self):
@@ -131,9 +131,8 @@ class Person(AbstractUser, PermissionsMixin):
         # interested_tags = models.ManyToManyField(Tag, blank=True)
         # follows = models.ManyToManyField(SuperConductor, through='Follow', related_name='followers')
 
-
 # ------------------------------------------------------------------------
 
 
-def get_user_display(user):
-    return user.formal_name
+# def get_user_display(user):
+#     return user.formal_name
