@@ -6,36 +6,84 @@ from django.utils.translation import gettext_lazy as _
 from Unipin.settings import PROFILE_IMAGES_PATH
 
 
-class PersonManager(BaseUserManager):
-    use_in_migrations = True
+# class PersonManager(BaseUserManager):
+#     use_in_migrations = True
+#
+#     def _create_user(self, email, password, **extra_fields):
+#         """
+#         Create and save a user with the given username, email, and password.
+#         """
+#         if not email:
+#             raise ValueError('The given email must be set')
+#         email = self.normalize_email(email)
+#         user = self.model(email=email, **extra_fields)
+#         user.set_password(password)
+#         user.save(using=self._db)
+#         return user
+#
+#     def create_user(self, email, password=None, **extra_fields):
+#         extra_fields.setdefault('is_staff', False)
+#         return self._create_user(email, password, **extra_fields)
+#
+#     def create_superuser(self, email, password):
+#         """
+#         Creates and saves a superuser with the given email, date of
+#         birth and password.
+#         """
+#         user = self.create_user(
+#             email,
+#             password=password,
+#             mobile=None
+#         )
+#         user.is_superuser = True
+#         user.is_staff = True
+#         user.save(using=self._db)
+#         return user
 
-    def _create_user(self, email, password, **extra_fields):
+class PersonManager(BaseUserManager):
+    def create_user(self, email, password=None):
         """
-        Create and save a user with the given username, email, and password.
+        Creates and saves a User with the given email, date of
+        birth and password.
         """
         if not email:
-            raise ValueError('The given email must be set')
-        email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+            raise ValueError('Users must have an email address')
+
+        user = self.model(
+            email=self.normalize_email(email),
+        )
+
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_user(self, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', False)
-        return self._create_user(email, password, **extra_fields)
-
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True.')
-
-        return self._create_user(email, password, **extra_fields)
+    def create_superuser(self, email, password):
+        """
+        Creates and saves a superuser with the given email, date of
+        birth and password.
+        """
+        user = self.create_user(
+            email,
+            password=password,
+        )
+        user.is_superuser = True
+        user.is_staff = True
+        user.save(using=self._db)
+        return user
 
 
 class Person(AbstractUser):
-    email = models.EmailField(u'ایمیل', unique=True)
+    email = models.EmailField(
+        verbose_name='email address',
+        max_length=255,
+        unique=True,
+    )
+    is_active = models.BooleanField(default=True)
+    is_staff = models.BooleanField(
+        _('staff status'),
+        default=False,
+        help_text=_('Designates whether the user can log into this admin site.'),
+    )
     username = models.CharField(_('username'), max_length=150, blank=True)
 
     # is_active = models.BooleanField(_('active'), default=True, help_text=_(
