@@ -30,8 +30,6 @@ ALLOWED_HOSTS = ['5.135.224.246', '127.0.0.1']
 
 AUTH_USER_MODEL = 'per_auth.Person'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
 
 # Application definition
 
@@ -177,12 +175,11 @@ APPEND_SLASH = False
 
 PROFILE_IMAGES_PATH = 'profile_image'
 
-
 # registration and custom user
 AUTHENTICATION_BACKENDS = [
 
     # Needed to login by username in Django admin, regardless of `allauth`
-    'django.contrib.auth.backends.ModelBackend',
+    # 'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
     'allauth.account.auth_backends.AuthenticationBackend',

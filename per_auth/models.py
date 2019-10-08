@@ -131,8 +131,9 @@ class Person(AbstractBaseUser, PermissionsMixin):
         # interested_tags = models.ManyToManyField(Tag, blank=True)
         # follows = models.ManyToManyField(SuperConductor, through='Follow', related_name='followers')
 
+
 # ------------------------------------------------------------------------
 
 
-# def get_user_display(user):
-#     return user.formal_name
+def get_user_display(user):
+    return user.formal_name
