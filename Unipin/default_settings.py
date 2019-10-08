@@ -26,7 +26,7 @@ SECRET_KEY = 'v)(lw^(sp2(ekwc(nt#y*m3sx*lj&n0*7p=l5@$1#9m)_=yt68'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['5.135.224.246']
+ALLOWED_HOSTS = ['5.135.224.246', '127.0.0.1']
 
 AUTH_USER_MODEL = 'per_auth.Person'
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
@@ -151,7 +151,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-LOGIN_URL = '/'
+# LOGIN_URL = '/'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -173,11 +173,10 @@ SESSION_COOKIE_DOMAIN = '127.0.0.1'
 
 APPEND_SLASH = False
 
-REST_SESSION_LOGIN = False
+# REST_SESSION_LOGIN = False
 
 PROFILE_IMAGES_PATH = 'profile_image'
 
-AUTH_USER_MODEL = 'per_auth.Person'
 
 # registration and custom user
 AUTHENTICATION_BACKENDS = [
