@@ -29,7 +29,19 @@ DEBUG = True
 ALLOWED_HOSTS = ['5.135.224.246', '127.0.0.1']
 
 AUTH_USER_MODEL = 'per_auth.Person'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = 'email'
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+USERNAME_FIELD = 'email'
+ACCOUNT_UNIQUE_EMAIL = True
+USERNAME_REQUIRED = False
+# ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
+ACCOUNT_USERNAME_BLACKLIST = ['admin']
+ACCOUNT_USER_DISPLAY = 'per_auth.models.get_user_display'
 
 # Application definition
 
@@ -150,6 +162,7 @@ USE_L10N = True
 USE_TZ = True
 
 # LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = "/"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
 
@@ -167,40 +180,30 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     '127.0.0.1:8000',
 # )
 
-SESSION_COOKIE_DOMAIN = '127.0.0.1'
+# SESSION_COOKIE_DOMAIN = '127.0.0.1'
 
-APPEND_SLASH = False
+# APPEND_SLASH = False
 
 # REST_SESSION_LOGIN = False
 
 PROFILE_IMAGES_PATH = 'profile_image'
 
 # registration and custom user
-AUTHENTICATION_BACKENDS = [
+# AUTHENTICATION_BACKENDS = [
 
     # Needed to login by username in Django admin, regardless of `allauth`
     # 'django.contrib.auth.backends.ModelBackend',
 
     # `allauth` specific authentication methods, such as login by e-mail
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
+#     'allauth.account.auth_backends.AuthenticationBackend',
+# ]
 SITE_ID = 1
 
 AUTH_USE_JWT = True
 REST_AUTH_REGISTER_SERIALIZERS = {
     'REGISTER_SERIALIZER': 'per_auth.serializers.CustomizedRegisterSerializer'
 }
-ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
-USERNAME_REQUIRED = False
-ACCOUNT_CONFIRM_EMAIL_ON_GET = True
-ACCOUNT_EMAIL_VERIFICATION = 'optional'
-ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
-ACCOUNT_SIGNUP_EMAIL_ENTER_TWICE = False
-ACCOUNT_USERNAME_BLACKLIST = ['admin']
-ACCOUNT_USER_DISPLAY = 'per_auth.models.get_user_display'
+
 
 # JWT conf
 JWT_AUTH = {
